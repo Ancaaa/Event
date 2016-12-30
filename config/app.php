@@ -154,6 +154,7 @@ return [
          * Package Service Providers...
          */
         'Collective\Html\HtmlServiceProvider',
+        'Cornford\Googlmapper\MapperServiceProvider',
 
         /*
          * Application Service Providers...
@@ -212,6 +213,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Image' => Intervention\Image\Facades\Image::class,
+        'Mapper'         => 'Cornford\Googlmapper\Facades\MapperFacade',
 
     ],
 

@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Mail;
 use Session;
+use Illuminate\Support\Facades\View;
 
 class PagesController extends Controller {
+
+    public $searchedItem="";
+
 
     public function getIndex() {
         return view('pages/welcome');
@@ -51,6 +55,8 @@ class PagesController extends Controller {
     }
     
     public function getAllEvents(){
+        view::share('$sharedItem', "");
+
         $events = Event::orderBy('startdate', 'asc')->paginate(20);
         return view('pages/allevents')->withEvents($events);
     

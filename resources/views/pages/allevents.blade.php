@@ -49,7 +49,22 @@
         @endsection 
 
         @section('content')
-            
+
+<!--        var location = $event->location
+        var title =$event->title
+        var description = $event->description
+        var seached = $global
+
+        var shown = 
+          location.split(' ').indexOf(searched) > -1 ||
+          title.split(' ').indexOf(searched) > -1 ||
+          description.split(' ').indexOf(searched) > -1
+
+        
+        if (searched && shown) {
+
+
+        } -->
         <!---//End-header---->
         <!---start-content---->
         <div class="content">
@@ -57,8 +72,11 @@
              <div id="main" role="main">
                   <ul id="tiles">
                   @foreach($events as $event)
+  
+
                     <!-- These are our grid blocks -->
                     <li onclick="location.href='{{ route('events.show', $event->id) }}';">
+
                          @if($event->image)
                         <img src="{{asset('images/' . $event->image)}}" width="282" height="118">
                           @else
