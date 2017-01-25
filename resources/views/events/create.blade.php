@@ -6,10 +6,10 @@
   
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
-   {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXEWjOzvyLBozOb4lm7oOrI4eH0YmZOXg&libraries=places&callback=initAutocomplete"
+   {{-- <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBXEWjOzvyLBozOb4lm7oOrI4eH0YmZOXg&libraries=places&callback=initAutocomplete"
          async defer></script> --}}
    
-   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+   <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
    <script src="{{ URL::asset('js/eventform.js') }}"></script>
    <!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
    <script>tinymce.init({  selector:'textarea', 
@@ -18,7 +18,7 @@
     
     
     <link rel="stylesheet" href="{{ URL::asset('css/form-style.css') }}">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
  <style>
    

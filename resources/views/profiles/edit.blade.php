@@ -4,7 +4,7 @@
 
 @section('createscripts')
   
-   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+   <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
    <script src="{{ URL::asset('js/eventform.js') }}"></script>
    <!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
    <script>tinymce.init({  selector:'textarea', 
@@ -13,7 +13,7 @@
     
     
     <link rel="stylesheet" href="{{ URL::asset('css/form-style.css') }}">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     
 
   

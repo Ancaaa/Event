@@ -10,7 +10,7 @@
         <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
         </script>
         <!----webfonts---->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
         <script src="{{URL::asset('js/jquery.min (2).js') }}"></script>
 
 
@@ -47,7 +47,7 @@
                                     @if(Auth::user()->id == $event->creator_id)
                                     <div class="artical-links">
                                     <ul>
-                                        <li><a href="http://localhost:8000/events/{{$event->id}}/edit"><button><img src="/images/editbutton.png" ><span>Edit</span></button></a></li>
+                                        <li><a href="//localhost:8000/events/{{$event->id}}/edit"><button><img src="/images/editbutton.png" ><span>Edit</span></button></a></li>
 
                                         <li><div class="col-sm-6">
                         <form method="POST" action="{{route('events.destroy', $event->id)}}">
