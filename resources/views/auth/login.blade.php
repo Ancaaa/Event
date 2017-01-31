@@ -1,74 +1,56 @@
-@extends('main')
+@extends('layouts.application_full')
 
-@section('title', '|Authentication')
-
-@section('authscripts')
-    
-    <link rel="stylesheet" href="{{ URL::asset('css/style-auth.css') }}">
-    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
-
-  
-</head>
-
-    
-<body>
-    
-@endsection
-    
-@section('content')
-
-<div class="login-wrap">
-    <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-        <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"><a href="/register">Sign Up</a></label>
-        <div class="login-form">
-        <form method="POST" action="{{ url('/login') }}">
-                        {{ csrf_field() }}
-            <div class="sign-in-htm">
-                <div class="group">
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="label">Email Address</label>
-                    <input id="email" type="Email" class="input" name="email" value="{{ old('email') }}">
-
-                     @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                </div>
-                </div>
-
-                <div class="group">
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="label">Password</label>
-                    <input id="password" type="password" class="input" name="password" data-type="password">
-
-                    @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                </div>
-                </div>
-
-                <div class="group">
-                    <input id="check" type="checkbox" class="check" name="remember" checked>
-                    <label for="check"><span class="icon"></span> Remember me</label>
-                </div>
-                <div class="group">
-                    <input type="submit" class="button" value="Sign In">
-                </div>
-                <div class="hr"></div>
-                <div class="foot-lnk">
-                    <a href="{{ url('/password/reset') }}">Forgot Password?</a>
-                </div>
-            </div>
-            </form>
-            </div>
+@section('content_full')
+<div id="container" class="force-fullwidth">
+  <div id="primary">
+    <div class="posts">
+      <div id="post-9" class="post post-9 page type-page status-publish hentry">
+        <div class="post-inner">
+          <form method="POST" action="{{ url('/login') }}" class="login-form">
+            {{ csrf_field() }}
+            <div class="form-group">
+             @if ($errors->has('email'))
+             <span class="help-block">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+            @endif
+            <label for="login-form-username">E-Mail Address
+            </label>
+            <input id="login-form-username" type="email" name="email" class="form-control" required="required">
         </div>
+        <div class="form-group">
+         @if ($errors->has('password'))
+         <span class="help-block">
+            <strong>{{ $errors->first('password') }}</strong>
+        </span>
+        @endif
+        <label for="login-form-password">Password
+        </label>
+        <input id="login-form-password" type="password" name="password" class="form-control" required="required">
     </div>
+    <div class="form-group terms-conditions-input">
+      <div class="checkbox">
+        <label for="register-form-conditions">
+          <div class="ez-checkbox ez-checked">
+            <input id="register-form-conditions" type="checkbox" name="remember" class="ez-hide" checked="" />
+        </div>
+        <span>Remember Me
+        </span>
+    </label>
+</div>
+</div>
+<div class="form-group">
+    <div class="foot-lnk">
+    <a href="{{ url('/password/reset') }}">Forgot Password?</a>
+</div>
+</div>
+<button type="submit" name="login_form" class="button">Log in
+</button>
+</form>
 
-
-
+</div>
+</div>
+</div>
+</div>
+</div>
 @endsection
-

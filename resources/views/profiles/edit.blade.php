@@ -1,78 +1,72 @@
-@extends('main')
+@extends('layouts.application_full')
 
-@section('title', '|Update profile')
+@section('content_full')
+<div id="container" class="force-fullwidth narrow">
+    <div id="primary">
+        <div class="posts">
+            <div class="post page type-page status-publish hentry">
+                <form method="POST" class="listing-manager-submission-form" enctype="multipart/form-data" action="{{ route('profiles.update', $user->id) }}">
+                    {{ csrf_field() }}
 
-@section('createscripts')
-  
-   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-   <script src="{{ URL::asset('js/eventform.js') }}"></script>
-   <!-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-   <script>tinymce.init({  selector:'textarea', 
-                           plugins: ["link lists",],                    
-                          menubar: false   });</script> -->
-    
-    
-    <link rel="stylesheet" href="{{ URL::asset('css/form-style.css') }}">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger" role="alert">
+                            <strong> Errors:</strong>
+                            <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-  
-</head>
+                    <fieldset class="listing-manager-submission-form-general">
+                        <legend>General Information</legend>
+                        <div class="fieldset-content">
+                            <div class="form-group">
+                                <label for="firstname">First Name<span class="required">*</span></label>
+                                <input type="text" required="required" id="firstname" name="firstname" value="{{ old('firstname') ? old('firstname') : $profile->firstname }}" class="form-control" />
+                            </div>
 
-    
-<body onload="getRandomColor();">
-    
-@endsection
-    
-@section('content')
-    <div class="center">
-  
+                            <div class="form-group">
+                                <label for="lastname">Last Name<span class="required">*</span></label>
+                                <input type="text" required="required" id="lastname" name="lastname" value="{{ old('lastname') ? old('lastname') : $profile->lastname }}" class="form-control" />
+                            </div>
 
-<form id="create-form" method="post" action="{{ route('profiles.update', $profile->user_id) }}" enctype="multipart/form-data" >
-    <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
-  
-         <label for="firstname">Firstname</label></p>
-  <p>
-      <input type="text" name="firstname" id="firstname" minlength="3" value="{{ $profile->firstname }}"></p>
+                            <div class="form-group">
+                                <label for="location">Location<span class="required">*</span></label>
+                                <input type="text" required="required" id="location" name="location" value="{{ old('location') ? old('location') : $profile->location }}" class="form-control" />
+                            </div>
 
-       <label for="lastname">Lastname</label></p>
-  <p>
-    <input type="text" name="lastname" id="lastname" value="{{ $profile->lastname }}"></p>
-    
-       <label for="location">Current city</label></p>
-  <p>
-    <input type="text" name="location" id="location" value="{{ $profile->location }}"></p>
+                            <div class="form-group">
+                                <label for="birthdate">Birthdate<span class="required">*</span></label>
+                                <input type="date" required="required" id="birthdate" name="birthdate" value="{{ old('birthdate') ? old('birthdate') : $profile->birthdate }}" class="form-control" />
+                            </div>
 
-     <label for="birthdate">Birthday</label></p>
-   <p>
-    <input type="date" name="birthdate" id="birthdate" value="{{ $profile->birthdate }}"></p>
-    
-     <label for="gender">Gender</label></p>
-    <p>
-    <input type="text" name="gender" id="gender" value="{{ $profile->gender }}"></p>
+                            <div class="form-group">
+                                <label for="gender">Gender<span class="required">*</span></label>
+                                <select name="gender">
+                                    <option value="Male" {{ old('gender') ? old('gender') === 'Male' ? 'selected' : '' : 'Male' === $profile->gender }}">Male</option>
+                                    <option value="Female" {{ old('gender') ? old('gender') === 'Female' ? 'selected' : '' : 'Female' === $profile->gender }}">Female</option>
+                                </select>
+                            </div>
 
-     <label for="profilepic">Choose a profile pic</label></p>
-    <p><input type="file" name="profilepic" id="profilepic"></p>
-    
-  <p>
-    <label for="bio">Add a description of you</label></p>
+                            <div class="form-group ">
+                                <label for="bio">About yourself<span class="required">*</span></label>
+                                <textarea class="form-control" rows="5" required="required" name="bio" id="bio">{{ old('bio') ? old('bio') : $profile->bio }}</textarea>
+                            </div>
 
-  <p>
-    <textarea name="bio" id="bio" placeholder="What can you tell us about your eventyou?" class="expanding"> {{ $profile->bio }} </textarea>
-  </p>
-  <p>
-    <button type="submit" >
-      <svg version="1.1" class="send-icn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="36px" viewBox="0 0 100 36" enable-background="new 0 0 100 36" xml:space="preserve">
-        <path d="M100,0L100,0 M23.8,7.1L100,0L40.9,36l-4.7-7.5L22,34.8l-4-11L0,30.5L16.4,8.7l5.4,15L23,7L23.8,7.1z M16.8,20.4l-1.5-4.3
-	l-5.1,6.7L16.8,20.4z M34.4,25.4l-8.1-13.1L25,29.6L34.4,25.4z M35.2,13.2l8.1,13.1L70,9.9L35.2,13.2z" />
-      </svg>    
-      <small>send</small>
-    </button>
-  </p>
-         {{ method_field('PUT') }}
-       
-       <!-- <input type="hidden" name="_token" value="{{ Session::token() }}"> -->
-</form>
+                            <div class="form-group ">
+                                <label for="profilepic">Avatar</label>
+                                <input type="file" id="profilepic" name="profilepic" class="form-control" />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" name="submit" value="1" class="button">Edit Profile</button>
+                    {{ method_field('PUT') }}
+                </form>
+            </div>
+        </div>
     </div>
- 
+</div>
 @endsection

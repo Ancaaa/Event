@@ -12,11 +12,11 @@ class AddCurrencyToEvents extends Migration
      */
     public function up()
     {
-        // 
+        //
         Schema::table('events', function($table) {
         $table->integer('currency')->after('price');
     });
-    
+
     }
 
     /**
@@ -26,7 +26,7 @@ class AddCurrencyToEvents extends Migration
      */
     public function down()
     {
-        //    
+        //
         Schema::table('events', function($table) {
         $table->dropColumn('currency');
     });

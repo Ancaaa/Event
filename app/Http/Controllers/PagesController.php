@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Mail;
 use Session;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 
 class PagesController extends Controller {
 
@@ -49,33 +50,32 @@ class PagesController extends Controller {
     public function getAbout(){
         $first = "Anca";
         $last = "Boia";
-        
+
         $fullname = $first . " ". $last;
         return view('pages/about') ->withFullname($fullname);
     }
-    
+
     public function getAllEvents(){
         view::share('$sharedItem', "");
 
-        $events = Event::orderBy('startdate', 'asc')->paginate(20);
-        return view('pages/allevents')->withEvents($events);
-    
+        $events = Event::orderBy('startdate', 'desc')->paginate(20);
+        return view('pages/allevents')->with(['events' => $events]);
     }
 
     public function getSingle($id){
 
         $event = Event::find($id);
-       
+
      //  $userid = Auth::id();
       // @if ($userid)
            # code...
-       
+
        // @if(Auth::check())
       //  $event->users()->sync($userid, false);
       //  @endif
       //  @endif
         return view('site.single')->withEvent($event);
-    
+
     }
 
     public function getProfile(){
@@ -86,6 +86,6 @@ class PagesController extends Controller {
     }
 
 
-    
-    
+
+
 }

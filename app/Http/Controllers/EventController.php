@@ -25,15 +25,14 @@ class EventController extends Controller
     {
         $this->middleware('auth', ['except' => 'show']);
     }
-    
 
-    public function index()
-    {
-        // create a variable and store all the events in it from the db
-        $events = Event::orderBy('startdate', 'asc')->paginate(20);
 
-        //return a view and pass in the above variable
-        return view('events.index')->withEvents($events);
+    public function index() {
+        $events = Event::where('creator_id', Auth::id())->orderBy('startdate', 'desc')->paginate(20);
+        return view('events.index')->with([
+            'pageTitle' => 'My Events',
+            'events' => $events
+        ]);
     }
 
     /**
@@ -44,7 +43,10 @@ class EventController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('events.create')->withCategories($categories);
+        return view('events.create')->with([
+            'categories' => $categories,
+            'pageTitle' => 'Create Event'
+        ]);
     }
 
     /**
@@ -59,16 +61,17 @@ class EventController extends Controller
         $this->validate($request, array(
             'title'       => 'required|max:255',
             'location'    => 'required',
+            'location_lat'    => 'required',
+            'location_lng'    => 'required',
             'startdate'   => 'required|date',
             'starttime'   => 'required',
-            'enddate'     => 'required|date|after:startdate',
+            'enddate'     => 'required|date|after_or_equal:startdate',
             'endtime'     => 'required',
             'price'       => 'digits_between:0,9999',
             'currency'    => 'required',
-            'category_id'    => 'required|integer', 
+            'category_id'    => 'required|integer',
             'description' => 'required',
             'image'       => 'sometimes|image',
-
         ));
 
         //store in DB
@@ -77,6 +80,8 @@ class EventController extends Controller
         $event->creator_id = Auth::user()->id;
         $event->title     = $request->title;
         $event->location  = $request->location;
+        $event->location_lat  = $request->location_lat;
+        $event->location_lng  = $request->location_lng;
         $event->startdate = $request->startdate;
         $event->starttime = $request->starttime;
         $event->enddate   = $request->enddate;
@@ -91,7 +96,19 @@ class EventController extends Controller
           $image = $request->file('image');
           $filename = time() . '.' . $image->getClientOriginalExtension();
           $location = public_path('images/' . $filename);
-          Image::make($image)->resize(800, 400)->save($location);
+          $newImage = Image::make($image);
+            // Smart Image Resizing
+            $thumbSize = 400;
+            $aspectRatio = $newImage->width() / $newImage->height();
+            if ($aspectRatio >= 1) {
+                $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
+            }
+            else {
+                $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
+            }
+
+            // Save Location
+            $newImage->save($location);
           $event->image = $filename;
         }
 
@@ -109,12 +126,18 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        return view('events.show')->withEvent($event);
+        return view('events.show')->with(["hero" => "event-detail", "event" => $event]);
     }
 
 
     public function isAttending($id) {
-        return json_encode(array("status" => "success", "attending" => Event::find($id)->attending(Auth::user()->id)));
+        $event = Event::find($id);
+
+        if (!$event) {
+            return json_encode(array("status" => "error", 'message' => 'The event could not be found.'));
+        }
+
+        return json_encode(array("status" => "success", "attending" => $event->attending(Auth::user()->id)));
     }
 
     public function toggleAttend($id) {
@@ -138,13 +161,17 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {
 
         // find the post in the db and save it as a variable
         $event = Event::find($id);
         $categories = Category::all();
         //return the view and pass it in the var we previously created
-        return view('events.edit')->withEvent($event)->withCategories($categories);
+        return view('events.edit')->with([
+            'event' => $event,
+            'categories' => $categories,
+            'pageTitle' => 'Edit Event'
+        ]);
     }
 
     /**
@@ -160,6 +187,8 @@ class EventController extends Controller
              $this->validate($request, array(
             'title'       => 'required|max:255',
             'location'    => 'required',
+            'location_lat'    => 'required',
+            'location_lng'    => 'required',
             'startdate'   => 'required|date',
             'starttime'   => 'required',
             'enddate'     => 'required|date|after:startdate',
@@ -177,6 +206,8 @@ class EventController extends Controller
 
              $event->title = $request->input('title');
              $event->location = $request->input('location');
+             $event->location_lat = $request->input('location_lat');
+             $event->location_lng = $request->input('location_lng');
              $event->startdate = $request->input('startdate');
              $event->starttime = $request->input('starttime');
              $event->enddate = $request->input('enddate');
@@ -191,7 +222,22 @@ class EventController extends Controller
               $image = $request->file('image');
               $filename = time() . '.' . $image->getClientOriginalExtension();
               $location = public_path('images/' . $filename);
-              Image::make($image)->resize(800, 400)->save($location);
+
+                $newImage = Image::make($image);
+
+                // Smart Image Resizing
+                $thumbSize = 400;
+                $aspectRatio = $newImage->width() / $newImage->height();
+                if ($aspectRatio >= 1) {
+                    $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
+                }
+                else {
+                    $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
+                }
+
+                // Save Location
+                $newImage->save($location);
+
               $oldFilename = $event->image;
 
               //update db

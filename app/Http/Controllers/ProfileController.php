@@ -21,7 +21,11 @@ class ProfileController extends Controller
     public function edit($user_id)
     {   $user = User::find($user_id);
         $profile = $user->profile;
-        return view('profiles.edit')->withProfile($profile);
+        return view('profiles.edit')->with([
+            'user' => $user,
+            'profile' => $profile,
+            'pageTitle' => "Edit Profile"
+        ]);
     }
 
     public function show($user_id)
@@ -31,7 +35,11 @@ class ProfileController extends Controller
         $user = User::find($user_id);
         $profile = $user->profile;
 
-        return view('profiles.show')->withProfile($profile);
+        return view('profiles.show')->with([
+            'user' => $user,
+            'profile' => $profile,
+            'pageTitle' => $user->name
+        ]);
     }
 
 
@@ -60,17 +68,33 @@ class ProfileController extends Controller
         $profile->gender    = $request->gender;
         $profile->bio       = $request->bio;
 
-        //upload image
         if ($request->hasFile('profilepic')) {
+            $oldFilename = $profile->profilepic;
+
+            // Make Image
             $image    = $request->file('profilepic');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $location = public_path('images/' . $filename);
-            Image::make($image)->resize(800, 400)->save($location);
-            $profile->profilepic = $filename;
-            $oldFilename = $profile->profilepic;
 
+            $newImage = Image::make($image);
+
+            // Smart Image Resizing
+            $thumbSize = 250;
+            $aspectRatio = $newImage->width() / $newImage->height();
+            if ($aspectRatio >= 1) {
+                $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
+            }
+            else {
+                $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
+            }
+
+            // Save Location
+            $newImage->save($location);
+
+            // Update User
             $profile->profilepic = $filename;
 
+            // Delete Old Avatar
             Storage::delete($oldFilename);
         }
 
@@ -79,6 +103,6 @@ class ProfileController extends Controller
         Session::flash('success', 'This post was successfully saved.');
 
         //redirect with flash data to events.show
-        return redirect()->route('profiles.show', $profile->user_id);
+        return redirect()->route('profiles.show', $user_id);
     }
 }
