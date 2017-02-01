@@ -14,50 +14,54 @@ use Image;
 use Storage;
 use File;
 
-class EventController extends Controller
-{
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-        public function __construct()
-    {
+class EventController extends Controller {
+
+    public function __construct() {
         $this->middleware('auth', ['except' => 'show']);
     }
 
+    /** Views Function **/
 
+    // Show My Events
     public function index() {
         $events = Event::where('creator_id', Auth::id())->orderBy('startdate', 'desc')->paginate(20);
+
         return view('events.index')->with([
             'pageTitle' => 'My Events',
             'events' => $events
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $categories = Category::all();
+    // Show Event Detail
+    public function show($id) {
+        return view('events.show')->with([
+            "hero" => "event-detail",
+            "event" => Event::find($id)
+        ]);
+    }
+
+    // Create Event Form
+    public function create() {
         return view('events.create')->with([
-            'categories' => $categories,
+            'categories' => Category::all(),
             'pageTitle' => 'Create Event'
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //validate the data
+    // Edit Event Form
+    public function edit($id) {
+        return view('events.edit')->with([
+            'event' => Event::find($id),
+            'categories' => Category::all(),
+            'pageTitle' => 'Edit Event'
+        ]);
+    }
+
+    /** Back End Functions **/
+
+    // Create Event Function
+    public function store(Request $request) {
+        // Data Validation
         $this->validate($request, array(
             'title'       => 'required|max:255',
             'location'    => 'required',
@@ -74,9 +78,7 @@ class EventController extends Controller
             'image'       => 'sometimes|image',
         ));
 
-        //store in DB
         $event = new Event;
-
         $event->creator_id = Auth::user()->id;
         $event->title     = $request->title;
         $event->location  = $request->location;
@@ -91,14 +93,17 @@ class EventController extends Controller
         $event->category_id = $request->category_id;
         $event->description = $request->description;
 
-        //upload image
         if ($request->hasFile('image')) {
-          $image = $request->file('image');
-          $filename = time() . '.' . $image->getClientOriginalExtension();
-          $location = public_path('images/' . $filename);
-          $newImage = Image::make($image);
-            // Smart Image Resizing
-            $thumbSize = 400;
+            // Make Image
+            $image    = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('images/events/' . $filename);
+
+            // Create New Image
+            $newImage = Image::make($image);
+
+            // Resize Image to maintain its aspect ratio
+            $thumbSize = 250;
             $aspectRatio = $newImage->width() / $newImage->height();
             if ($aspectRatio >= 1) {
                 $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
@@ -107,173 +112,133 @@ class EventController extends Controller
                 $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
             }
 
-            // Save Location
+            // Save Image
             $newImage->save($location);
-          $event->image = $filename;
+
+            // Update Event Image
+            $event->image = $filename;
         }
 
         $event->save();
 
-      //  $event->users()->sync($user->id, false);
-
         Session::flash('success', 'The event was successfully saved!');
-
         return redirect()->route('events.show', $event->id);
-
-        //redirect to another page
     }
 
-    public function show($id)
-    {
-        $event = Event::find($id);
-        return view('events.show')->with(["hero" => "event-detail", "event" => $event]);
-    }
-
-
-    public function isAttending($id) {
-        $event = Event::find($id);
-
-        if (!$event) {
-            return json_encode(array("status" => "error", 'message' => 'The event could not be found.'));
-        }
-
-        return json_encode(array("status" => "success", "attending" => $event->attending(Auth::user()->id)));
-    }
-
-    public function toggleAttend($id) {
-        $event = Event::find($id);
-
-        $attending = $event->attending(Auth::user()->id);
-        if (!$attending) {
-            $event->users()->attach(Auth::user()->id);
-        }
-        else {
-            $event->users()->detach(Auth::user()->id);
-        }
-
-        return json_encode(array("status" => "success", "attending" => !$attending));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-
-        // find the post in the db and save it as a variable
-        $event = Event::find($id);
-        $categories = Category::all();
-        //return the view and pass it in the var we previously created
-        return view('events.edit')->with([
-            'event' => $event,
-            'categories' => $categories,
-            'pageTitle' => 'Edit Event'
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //Validate the data
-             $this->validate($request, array(
+    // Edit Event Function
+    public function update(Request $request, $id) {
+        $this->validate($request, array(
             'title'       => 'required|max:255',
             'location'    => 'required',
             'location_lat'    => 'required',
             'location_lng'    => 'required',
             'startdate'   => 'required|date',
             'starttime'   => 'required',
-            'enddate'     => 'required|date|after:startdate',
+            'enddate'     => 'required|date|after_or_equal:startdate',
             'endtime'     => 'required',
             'price'       => 'digits_between:0,9999',
             'currency'    => 'required',
             'category_id' => 'required|integer',
             'description' => 'required',
-            'image'       => 'image',
-
+            'image'       => 'sometimes|image',
         ));
 
-        //save the data to the db
-             $event = Event::find($id);
+        $event = Event::find($id);
 
-             $event->title = $request->input('title');
-             $event->location = $request->input('location');
-             $event->location_lat = $request->input('location_lat');
-             $event->location_lng = $request->input('location_lng');
-             $event->startdate = $request->input('startdate');
-             $event->starttime = $request->input('starttime');
-             $event->enddate = $request->input('enddate');
-             $event->endtime = $request->input('endtime');
-             $event->price = $request->input('price');
-             $event->currency = $request->input('currency');
-             $event->category_id = $request->input('category_id');
-             $event->description = $request->input('description');
+        if (!$event) {
+            return 'Event not found!';
+        }
 
-             if ($request->hasFile('image')) {
-                //add new photo
-              $image = $request->file('image');
-              $filename = time() . '.' . $image->getClientOriginalExtension();
-              $location = public_path('images/' . $filename);
+        $event->title = $request->input('title');
+        $event->location = $request->input('location');
+        $event->location_lat = $request->input('location_lat');
+        $event->location_lng = $request->input('location_lng');
+        $event->startdate = $request->input('startdate');
+        $event->starttime = $request->input('starttime');
+        $event->enddate = $request->input('enddate');
+        $event->endtime = $request->input('endtime');
+        $event->price = $request->input('price');
+        $event->currency = $request->input('currency');
+        $event->category_id = $request->input('category_id');
+        $event->description = $request->input('description');
 
-                $newImage = Image::make($image);
+        if ($request->hasFile('image')) {
+            // Make Image
+            $image    = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = public_path('images/events/' . $filename);
 
-                // Smart Image Resizing
-                $thumbSize = 400;
-                $aspectRatio = $newImage->width() / $newImage->height();
-                if ($aspectRatio >= 1) {
-                    $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
-                }
-                else {
-                    $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
-                }
+            // Create New Image
+            $newImage = Image::make($image);
 
-                // Save Location
-                $newImage->save($location);
+            // Resize Image to maintain its aspect ratio
+            $thumbSize = 250;
+            $aspectRatio = $newImage->width() / $newImage->height();
+            if ($aspectRatio >= 1) {
+                $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
+            }
+            else {
+                $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
+            }
 
-              $oldFilename = $event->image;
+            // Get old image
+            $oldFilename = $event->image;
 
-              //update db
-               $event->image = $filename;
+            // Save Image
+            $newImage->save($location);
 
-              //delete the old photo
-              Storage::delete($oldFilename);
-             //  File::delete('images/', $oldFilename);
-             //  if ($oldFilename)
-             //   unlink(public_path('images/' . $oldFilename));
-          }
+            // Update Event Image
+            $event->image = $filename;
 
-             $event->save();
-        //set flash data with success message
-             Session::flash('success', 'This post was successfully saved.');
+            // Delete old image
+            Storage::delete($oldFilename);
+        }
 
-        //redirect with flash data to events.show
-             return redirect()->route('events.show', $event->id);
+        // Save the event
+        $event->save();
+
+        Session::flash('success', 'This post was successfully saved.');
+        return redirect()->route('events.show', $event->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    // Delete Event
+    public function destroy($id) {
         $event = Event::find($id);
-       // $event->users()->detach();
 
         Storage::delete($event->image);
         $event->delete();
 
         Session::flash('success', 'The event was successfully deleted.');
-
         return redirect()->route('events.index');
+    }
+
+    /** API Functions **/
+
+    // User is attending event
+    public function isAttending($id) {
+        $event = Event::find($id);
+        $user_id = Auth::id();
+
+        if (!$event) {
+            return json_encode(array("status" => "error", 'message' => 'The event could not be found.'));
+        }
+
+        return json_encode(array("status" => "success", "attending" => $event->attending($user_id)));
+    }
+
+    // Toggle user attendance
+    public function toggleAttend($id) {
+        $event = Event::find($id);
+        $user_id = Auth::id();
+
+        $attending = $event->attending($user_id);
+        if (!$attending) {
+            $event->users()->attach($user_id);
+        }
+        else {
+            $event->users()->detach($user_id);
+        }
+
+        return json_encode(array("status" => "success", "attending" => !$attending));
     }
 }

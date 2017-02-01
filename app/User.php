@@ -20,6 +20,10 @@ class User extends Authenticatable {
         return $this->hasOne('App\Profile');
     }
 
+    public function latestAttending() {
+        return $this->events()->orderBy('startdate', 'desc');
+    }
+
     protected $fillable = [
         'name', 'email', 'password',
     ];

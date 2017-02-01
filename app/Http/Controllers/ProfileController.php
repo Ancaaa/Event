@@ -11,16 +11,15 @@ use Session;
 use Image;
 use File;
 
-class ProfileController extends Controller
-{
-    public function __construct()
-    {
+class ProfileController extends Controller {
+    public function __construct() {
         $this->middleware('auth');
     }
 
-    public function edit($user_id)
-    {   $user = User::find($user_id);
+    public function edit($user_id) {
+        $user = User::find($user_id);
         $profile = $user->profile;
+
         return view('profiles.edit')->with([
             'user' => $user,
             'profile' => $profile,
@@ -28,10 +27,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function show($user_id)
-    {
-
-       // $profile = Profile::find($user_id);
+    public function show($user_id) {
         $user = User::find($user_id);
         $profile = $user->profile;
 
@@ -42,10 +38,9 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function update(Request $request, $user_id) {
 
-    public function update(Request $request, $user_id)
-    {
-        //Validate the data
+        // Data Validation
         $this->validate($request, array(
             'firstname'  => 'max:255',
             'lastname'   => 'max:255',
@@ -54,13 +49,13 @@ class ProfileController extends Controller
             'gender'     => 'max:255',
             'bio'        => 'max:255',
             'profilepic' => 'image',
-
         ));
 
-        //save the data to the db
+        // Define Vars
         $user = User::find($user_id);
         $profile = $user->profile;
 
+        // Update Profile Columns
         $profile->firstname = $request->firstname;
         $profile->lastname  = $request->lastname;
         $profile->location  = $request->location;
@@ -69,16 +64,18 @@ class ProfileController extends Controller
         $profile->bio       = $request->bio;
 
         if ($request->hasFile('profilepic')) {
-            $oldFilename = $profile->profilepic;
-
             // Make Image
             $image    = $request->file('profilepic');
             $filename = time() . '.' . $image->getClientOriginalExtension();
-            $location = public_path('images/' . $filename);
+            $location = public_path('images/avatars/' . $filename);
 
+            // Save old avatar location (to delete it)
+            $oldFilename = $profile->profilepic;
+
+            // Create New Image
             $newImage = Image::make($image);
 
-            // Smart Image Resizing
+            // Resize Image to maintain its aspect ratio
             $thumbSize = 250;
             $aspectRatio = $newImage->width() / $newImage->height();
             if ($aspectRatio >= 1) {
@@ -88,21 +85,20 @@ class ProfileController extends Controller
                 $newImage->resize($thumbSize, $thumbSize / $aspectRatio);
             }
 
-            // Save Location
+            // Save Image
             $newImage->save($location);
 
-            // Update User
+            // Update User Profile Picture
             $profile->profilepic = $filename;
 
             // Delete Old Avatar
             Storage::delete($oldFilename);
         }
 
+        // Save Updated Column
         $profile->save();
 
         Session::flash('success', 'This post was successfully saved.');
-
-        //redirect with flash data to events.show
         return redirect()->route('profiles.show', $user_id);
     }
 }
