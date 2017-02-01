@@ -4,7 +4,7 @@
 Route::get('/', 'PagesController@getIndex');
 Route::post('/', 'PagesController@postIndex');
 Route::get('/home', 'PagesController@getIndex');
-Route::get('allevents', 'PagesController@getAllEvents');
+Route::get('allevents', 'PagesController@getAllEvents')->name('allevents');
 
 // Old Profile Routes
 //Route::resource('profile', 'ProfilesController', ['only' => ['show', 'edit', 'update']]);

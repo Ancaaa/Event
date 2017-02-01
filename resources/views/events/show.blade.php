@@ -216,11 +216,11 @@
                                 @foreach ($event->comments as $comment)
                                     <div class="comment">
                                         <div class="avatar_holder">
-                                            <div class="avatar" style="background-image: url('/images/{{ $comment->user->profile->profilepic }}');"></div>
+                                            <div class="avatar" style="background-image: url('/images/avatars/{{ $comment->user->profile->profilepic }}');"></div>
                                         </div>
                                         <div class="content">
                                             <div class="identifier">
-                                                <a href="{{ url('/profiles/' . $comment->user) }}">{{ $comment->username }}</a>
+                                                <a href="{{ url('/profiles/' . $comment->user->id) }}">{{ $comment->username }}</a>
                                             </div>
                                             <div class="comment-text">
                                                 {{ $comment->comment }}

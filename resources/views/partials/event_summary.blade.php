@@ -1,7 +1,7 @@
 <li class="product">
     <a href="{{ url('/events', $event->id) }}" class="woocommerce-LoopProduct-link">
         <div class="product-image-wrapper">
-            <img width="400" height="340" src="{{ '/images/' . $event->image }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
+            <img width="400" height="340" src="{{ '/images/events/' . $event->image }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
         </div>
 
         <div class="product-date">

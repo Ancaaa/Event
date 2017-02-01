@@ -191,7 +191,9 @@ class EventController extends Controller {
             $event->image = $filename;
 
             // Delete old image
-            Storage::delete($oldFilename);
+            if ($oldFilename == 'cover.jpeg') {
+                Storage::delete($oldFilename);
+            }
         }
 
         // Save the event

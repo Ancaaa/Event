@@ -32,7 +32,7 @@
                                     <div class="textwidget">
                                         <div class="cta-small">
                                             <div class="cta-small-inner">
-                                                Find big black dicks around you <a href="/events/" class="button button-black">Show All Events</a>
+                                                <a href="{{ route('allevents') }}" class="button button-black">Show All Events</a>
                                             </div>
                                         </div>
                                     </div>
