@@ -5,17 +5,37 @@ namespace App;
 use DateTime;
 
 class Utils {
+    public static function dbBefore($start=null, $end=null) {
+        $format = "Y-m-d H:i:s";
+        $startDateTime = DateTime::createFromFormat($format, $start);
+
+        if ($end === null) {
+            $endDateTime = new DateTime();
+        }
+        else {
+            $endDateTime = DateTime::createFromFormat($format, $end);
+        }
+
+        return $startDateTime < $endDateTime;
+    }
+
     public static function dbDuration($start=null, $end=null, $format=null) {
         if ($format === null) {
             $format = "Y-m-d H:i:s";
         }
 
-        if ($start === null || $end === null) {
+        if ($start === null) {
             return null;
         }
 
         $startDateTime = DateTime::createFromFormat($format, $start);
-        $endDateTime = DateTime::createFromFormat($format, $end);
+
+        if ($end === null) {
+            $endDateTime = new DateTime();
+        }
+        else {
+            $endDateTime = DateTime::createFromFormat($format, $end);
+        }
 
         return Utils::formatDateDiff($startDateTime, $endDateTime);
     }

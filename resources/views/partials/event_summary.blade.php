@@ -1,11 +1,11 @@
-<li class="product">
+<li class="product summ">
     <a href="{{ url('/events', $event->id) }}" class="woocommerce-LoopProduct-link">
         <div class="product-image-wrapper">
             @if($event->image)
             <img width="400" height="340" src="{{ '/images/events/' . $event->image }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
             @else
             <img width="400" height="340" src="{{ '/images/thumbs/01.jpg' }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
-            @endif      
+            @endif
         </div>
 
         <div class="product-date">
@@ -16,8 +16,13 @@
         <h3>{{ $event->title }}</h3>
 
         <div class="product-location loc">
-        <i class="lnr lnr-map-marker"></i>
+            <i class="lnr lnr-map-marker"></i>
             {{ $event->location }}
+        </div>
+
+        <div class="product-location loc">
+            <i class="lnr lnr-hourglass"></i>
+            {{ $event->durationNow() }}
         </div>
 
         <span class="onsale">{{ $event->duration() }}</span>

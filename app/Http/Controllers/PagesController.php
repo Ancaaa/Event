@@ -13,8 +13,7 @@ use Carbon\Carbon;
 
 class PagesController extends Controller {
 
-    public $searchedItem="";
-
+    public $searchedItem = "";
 
     public function getIndex() {
         return view('pages/welcome');
@@ -25,67 +24,41 @@ class PagesController extends Controller {
         #pass that data to the correct view
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, ['email' =>'required|email',
-                                    'message' => 'min:10',
-                                    'subject' => 'min:3']);
+    public function postIndex(Request $request) {
+        $this->validate($request, [
+            'email' =>'required|email',
+            'message' => 'min:10',
+            'subject' => 'min:3'
+        ]);
+
         $data = array(
             'email' => $request->email,
             'subject' => $request->subject,
-            'bodyMessage' => $request->message);
+            'bodyMessage' => $request->message
+        );
 
-        Mail::send('emails.contact', $data, function($message) use ($data){
+        Mail::send('emails.contact', $data, function($message) use ($data) {
             $message->from($data['email']);
             $message->to('events@eventU.com');
             $message->subject($data['subject']);
-
         });
 
         Session::flash('success', 'Your email was sent!');
-
         return redirect(' ');
-
     }
 
-    public function getAbout(){
-        $first = "Anca";
-        $last = "Boia";
-
-        $fullname = $first . " ". $last;
-        return view('pages/about') ->withFullname($fullname);
-    }
-
-    public function getAllEvents(){
+    public function getAllEvents() {
         view::share('$sharedItem', "");
 
-        $events = Event::orderBy('startdate', 'desc')->paginate(20);
+        $events = Event::activeEvents()->orderBy('startdate')->paginate(20);
         return view('pages/allevents')->with(['events' => $events]);
-    }
-
-    public function getSingle($id){
-
-        $event = Event::find($id);
-
-     //  $userid = Auth::id();
-      // @if ($userid)
-           # code...
-
-       // @if(Auth::check())
-      //  $event->users()->sync($userid, false);
-      //  @endif
-      //  @endif
-        return view('site.single')->withEvent($event);
-
     }
 
     public function getProfile(){
         $user = Auth::user();
-        return view('pages.profile')->with(['user' => $user]);
 
-     //   return view('pages/profile');
+        return view('pages.profile')->with([
+            'user' => $user
+        ]);
     }
-
-
-
-
 }

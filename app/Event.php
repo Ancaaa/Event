@@ -43,7 +43,32 @@ class Event extends Model {
         return Utils::dbDuration($start_string, $end_string);
     }
 
+    public function durationNow() {
+        $start_string = $this->startdate . " " . $this->starttime;
+        $end_string = $this->enddate . " " . $this->endtime;
+
+        if (Utils::dbBefore($end_string)) {
+            return "Ended";
+        }
+
+        $prefix = Utils::dbBefore($start_string) ? 'Started ' : 'Starts in ';
+        $sufix = Utils::dbBefore($start_string) ? ' ago' : '';
+
+        return $prefix . Utils::dbDuration($start_string) . $sufix;
+    }
+
     public function attendantsNum() {
         return sizeof($this->users);
+    }
+
+    public static function activeEvents() {
+        return Event::where([
+            ['enddate', ">", date('Y-m-d')]
+        ])->orWhere(function ($query) {
+            $query->where([
+                ['enddate', "=", date('Y-m-d')],
+                ['endtime', ">", date('H:i:s')]
+            ]);
+        });
     }
 }
