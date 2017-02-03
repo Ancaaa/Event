@@ -20,6 +20,14 @@ class User extends Authenticatable {
         return $this->hasOne('App\Profile');
     }
 
+    public function admin() {
+        return $this->hasOne('App\Models\Admin', 'user_id', 'id');
+    }
+
+    public function isAdmin() {
+        return $this->admin()->count() > 0;
+    }
+
     public function latestAttending() {
         return $this->events()->orderBy('startdate', 'desc');
     }
