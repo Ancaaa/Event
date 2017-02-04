@@ -54,7 +54,9 @@ function initCreateEventMap() {
           });
         }
 
-        cb()
+        if (cb) {
+          cb();
+        }
       }
     });
   }

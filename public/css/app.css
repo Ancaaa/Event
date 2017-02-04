@@ -167,6 +167,40 @@ body {
   padding: 5px 15px 0 !important;
   font-size: 10px;
 }
+.main-inner.padd {
+  position: relative;
+}
+.page-title-hero {
+  position: relative;
+  color: #FFF;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.5);
+}
+.page-title-hero .page-title-meta {
+  color: #FFF;
+}
+.page-title-hero .page-title-background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.page-title-hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: .2;
+}
+.summ {
+  margin-bottom: 20px;
+}
 @media (max-width: 992px) and (min-width: 768px) {
   .woocommerce ul.products li.product.summ {
     vertical-align: top;

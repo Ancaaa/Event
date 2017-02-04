@@ -1,5 +1,14 @@
 @extends('layouts.application_full')
 
+@section('extra-headers')
+    <script src="{{ URL::asset('js/show-event.js') }}"></script>
+    <style>
+        #map {
+            height: 300px;
+        }
+    </style>
+@endsection
+
 @section('content_full')
 
 <div class="content">
@@ -7,6 +16,7 @@
         <div id="content" role="main">
             <!-- Start Event -->
             <div class="product">
+
                 <div class="summ">
                     <div class="event-details">
                         <div class="event-details-inner">
@@ -20,12 +30,15 @@
                                     @if(Auth::check())
                                         <a id="action-going" class="button button-secondary">#nostatus</a>
                                         @if($event->creator_id === Auth::id())
-                                            <a href="{{ url('/events/' . $event->id . '/edit') }}" class="button button-secondary">Edit Event</a>
+                                            <a href="{{ url('/events/' . $event->id . '/edit') }}" class="button button-secondary">Edit</a>
                                             <form method="POST" action="{{ route('events.destroy', $event->id) }}">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
-                                                <button class="button button-secondary">Delete Event</button>
+                                                <button class="button button-secondary">Delete</button>
                                             </form>
+                                            @if (Auth::user()->isAdmin())
+                                                <a class="button button-black">Warn</a>
+                                            @endif
                                         @endif
                                     @else
                                         <a class="testButtonGrey" href="{{ url('/login') }}">Please login to join</a>
@@ -69,7 +82,7 @@
 
                                 <li>
                                     <strong>Location</strong>
-                                    <span>{{ $event->location }}</span>
+                                    <span id="locationData">{{ $event->location }}</span>
                                 </li>
 
                                 <li>
@@ -84,7 +97,12 @@
 
                                 <li>
                                     <strong>Author</strong>
-                                    <span>{{ $event->creator->name }}</span>
+                                    <span><a href="{{ route('profile.show', $event->creator->id) }}">{{ $event->creator->name }}</a></span>
+                                </li>
+
+                                <li>
+                                    <strong>Number of people attending</strong>
+                                    <span>{{ $event->users->count() }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -99,11 +117,11 @@
                         <li class="social_tab">
                             <a href="#tab-social">Social</a>
                         </li>
-                        <li class="location_tab">
+                        <li class="location_tab" onclick="tryAgain()">
                             <a href="#tab-location">Location</a>
                         </li>
                         <li class="going_tab">
-                            <a href="#tab-going">Going</a>
+                            <a href="#tab-going">Who's Going?</a>
                         </li>
                     </ul>
 
@@ -150,20 +168,45 @@
                     <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--location panel entry-content wc-tab" id="tab-location" style="display: none;">
                         <h2>Location</h2>
 
-                        <a href="https://maps.google.com?daddr=37.400198,-122.131055" class="get-direction">Get directions</a>
+                        <span class="hidden" id="latData">{{ $event->location_lat }}</span>
+                        <span class="hidden" id="lngData">{{ $event->location_lng }}</span>
 
-                        <div style="height:500px;width:100%;max-width:100%;list-style:none; transition: none;overflow:hidden;">
+                        <div style="padding-bottom: 20px;">
+                            <dl>
+                                <dt>Location Name</dt>
+                                <dd>{{ $event->location }}</dd>
+                            </dl>
+                            <a class="button button-black"
+                                target="_blank"
+                                href="https://maps.google.com?daddr={{ $event->location_lat }},{{ $event->location_lng }}">
+                                Get directions
+                            </a>
+                        </div>
+
+                        <div id="map"></div>
+
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC5eNDyxYWDkm8_2n-bJ39vaJDFFr4Hrw&libraries=places&callback=showEventMap&language=ro&region=RO" async defer></script>
+
+                        {{-- <div style="height:500px;width:100%;max-width:100%;list-style:none; transition: none;overflow:hidden;">
                             <div id="display-google-map" style="height:100%; width:100%;max-width:100%;">
                                 <iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://www.google.com/maps/embed/v1/place?q=37.400198,-122.131055&amp;key=AIzaSyDmXybAJzoPZ6hH-Jhv7QMCSGgQ6MY8WqY">
                                 </iframe>
                             </div>
 
                             <style>#display-google-map img{max-width:none!important;background:none!important;font-size: inherit;}</style>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--contact panel entry-content wc-tab" id="tab-going" style="display: none;">
-                        <h2>Going</h2>
+                        <h2>Who's Going?</h2>
+                        <div class="event-attendants">
+                            {{-- TODO: Design --}}
+                            @foreach ($event->users as $attendant)
+                                <div class="attendant">
+                                    {{ $attendant->name }}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 

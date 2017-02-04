@@ -103,7 +103,7 @@ class EventController extends Controller {
             $newImage = Image::make($image);
 
             // Resize Image to maintain its aspect ratio
-            $thumbSize = 250;
+            $thumbSize = 800;
             $aspectRatio = $newImage->width() / $newImage->height();
             if ($aspectRatio >= 1) {
                 $newImage->resize($aspectRatio * $thumbSize, $thumbSize);
@@ -172,7 +172,7 @@ class EventController extends Controller {
             $newImage = Image::make($image);
 
             // Resize Image to maintain its aspect ratio
-            $thumbSize = 250;
+            $thumbSize = 800;
             $aspectRatio = $newImage->width() / $newImage->height();
             if ($aspectRatio >= 1) {
                 $newImage->resize($aspectRatio * $thumbSize, $thumbSize);

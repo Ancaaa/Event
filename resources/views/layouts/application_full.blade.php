@@ -4,7 +4,9 @@
         <div class="main">
             <div class="main-inner padd">
                 @if(isset($hero) && $hero === 'event-detail')
-                    <div class="page-title">
+                    <div class="page-title page-title-hero">
+                        <div class="page-title-background" style="background-image: url('/images/events/{{ $event->image }}')"></div>
+                        <div class="overlay"></div>
                         <div class="page-title-inner">
                             <strong>{{ $event->category->name }}</strong>
                             <h1>{{ $event->title }}</h1>

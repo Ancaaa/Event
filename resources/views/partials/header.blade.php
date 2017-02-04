@@ -8,7 +8,7 @@
                         <div class="site-title">EventU</div>
                     </div>
 
-                    <a href="{{ url('/events/create') }}" class="button button-secondary">Submit Event</a>
+                    <a href="{{ url('/events/create') }}" class="button button-secondary">Create Event</a>
                 </div>
 
                 <div class="header-bottom">
