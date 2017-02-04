@@ -31,13 +31,15 @@
                                         <a id="action-going" class="button button-secondary">#nostatus</a>
                                         @if($event->creator_id === Auth::id())
                                             <a href="{{ url('/events/' . $event->id . '/edit') }}" class="button button-secondary">Edit</a>
+                                        @endif
+                                        @if (Auth::check() && Auth::user()->isAdmin() || $event->creator_id === Auth::id())
                                             <form method="POST" action="{{ route('events.destroy', $event->id) }}">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button class="button button-secondary">Delete</button>
                                             </form>
                                         @endif
-                                        @if (Auth::user()->isAdmin())
+                                        @if (Auth::check() && Auth::user()->isAdmin())
                                             <a class="button button-black warnButton">Warn</a>
                                         @endif
                                     @else
@@ -270,6 +272,9 @@
                                             </div>
                                             <div class="comment-meta">
                                                 <span>{{ $comment->created_at }}</span>
+                                                @if (Auth::check() && Auth::user()->isAdmin() || $comment->user->id === Auth::id())
+                                                    <a href="{{ route('comments.delete', $comment->id) }}" class="deleteButton">Delete</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

@@ -26,6 +26,13 @@
         <div class="menu-primary-container">
             <ul id="menu-primary-1" class="menu">
                 <li class=""><a href="{{ url('/') }}">Home</a></li>
+                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6"><a>Categories</a>
+                    <ul class="sub-menu">
+                        @foreach($categories as $category)
+                            <li class=""><a href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
                 <li class=""><a href="{{ url('/allevents')}}">Find Events</a></li>
             </ul>
 

@@ -40,6 +40,41 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="panel-grid" id="pg-124-2">
+                        <div style="background-color: #fafafa;margin: -30px -1200px 0 -1200px;padding: 0 1200px 60px 1200px;" class="panel-row-style">
+                            <div class="panel-grid-cell" id="pgc-124-2-0">
+                                <div class="so-panel widget widget_text panel-first-child panel-last-child" id="panel-124-2-0-0" data-index="6">
+                                    <div class="textwidget">
+                                        <div class="page-header">
+                                            <h2>Event Categories</h2>
+                                            <p>Finding an event is easier. Choose from our various categories ...mda</p>
+                                        </div>
+
+                                        <div class="listing-manager-locations-wrapper">
+                                            <div class="listing-manager-locations">
+                                            @foreach($categories as $category)
+                                                <div class="listing-manager-location">
+                                                    <div class="listing-manager-location-inner">
+                                                        <a href="{{ route('category.show', $category->id) }}" style="background-image: url('/images/categories/{{ $category->image }}');">
+                                                            <h3>{{ $category->name }}</h3>
+                                                            <h4>{{ $category->events->count() }} events</h4>
+
+                                                            <span class="button">Show Events</span>
+                                                        </a>
+                                                    </div><!-- /.listing-manager-location-inner -->
+                                                </div><!-- /.listing-manager-location -->
+                                            @endforeach
+                                            </div><!-- /.listing-manager-locations -->
+                                        </div><!-- /.listing-manager-locations-wrapper -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <!-- /.main-inner -->

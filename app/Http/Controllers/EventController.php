@@ -14,10 +14,12 @@ use App\Notification;
 use Image;
 use Storage;
 use File;
+use Illuminate\Support\Facades\View;
 
 class EventController extends Controller {
 
     public function __construct() {
+        parent::__construct();
         $this->middleware('auth', ['except' => 'show']);
     }
 
@@ -217,6 +219,10 @@ class EventController extends Controller {
     // Delete Event
     public function destroy($id) {
         $event = Event::find($id);
+
+        if (Auth::id() !== $event->creator_id && !Auth::user()->isAdmin()) {
+            return redirect()->route('events.index');
+        }
 
         Storage::delete($event->image);
         $event->delete();

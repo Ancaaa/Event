@@ -13,6 +13,7 @@ use App\Event;
 class NotificationsController extends Controller {
 
     public function __construct(Request $request) {
+        parent::__construct();
         $this->middleware(['auth']);
     }
 
@@ -57,28 +58,28 @@ class NotificationsController extends Controller {
     public function getMessage($notification) {
         switch ($notification->type) {
             case 1:
-                return 'The admin has marked your event under review, please verify to put it back online or it will be deleted.';
+                return 'The admin has marked your event under review, please verify to put it back online or it will be deleted';
             case 2:
                 $event = Event::find($notification->ref_id);
-                return 'Don’t forget to make it to ' . $event->title . ' today.';
+                return 'Don’t forget to make it to ' . $event->title . ' today';
             case 3:
                 $event = Event::find($notification->ref_id);
-                return 'The host of "' . $event->title . '" has commented on the event page.';
+                return 'The host of ' . $event->title . ' has commented on the event page';
             case 4:
                 $event = Event::find($notification->ref_id);
-                return 'The host of "' . $event->title . '" has edited the event.';
+                return 'The host of ' . $event->title . ' has edited the event';
             case 5:
                 $event = Event::find($notification->ref_id);
                 $user = User::find($notification->alt_id);
-                return $user->name . ' has joined "' . $event->title . '".';
+                return $user->name . ' has joined ' . $event->title;
             case 6:
                 $event = Event::find($notification->ref_id);
                 $user = User::find($notification->alt_id);
-                return $user->name . ' has left "' . $event->title . '".';
+                return $user->name . ' has left ' . $event->title;
             case 7:
                 $event = Event::find($notification->ref_id);
                 $user = User::find($notification->alt_id);
-                return $user->name . ' has commented on "' . $event->title . '".';
+                return $user->name . ' has commented on ' . $event->title;
         }
     }
 

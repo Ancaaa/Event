@@ -25,6 +25,9 @@ Route::get('events/{id}/toggle', 'EventController@toggleAttend');
 Route::get('events/{id}/status', 'EventController@isAttending');
 Route::get('events/{id}/warn', 'NotificationsController@warnEvent')->name('events.warn');
 
+// Categories
+Route::get('categories/{id}', 'PagesController@showCategory')->name('category.show');
+
 // Notification Routes
 Route::get('notifications/', 'NotificationsController@getNotifications')->name('notifications.read');
 Route::get('check-notifications/', 'NotificationsController@updateNotifications')->name('notifications.update');
@@ -34,3 +37,4 @@ Route::auth();
 
 // Comments
 Route::post('comments/{event_id}', ['uses' => 'CommentsController@store', 'as' => 'comments.store']);
+Route::get('comments/{event_id}/delete', ['uses' => 'CommentsController@destroy', 'as' => 'comments.delete']);

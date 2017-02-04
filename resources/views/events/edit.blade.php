@@ -16,6 +16,8 @@
       <div class="post page type-page status-publish hentry">
         <form method="POST" class="listing-manager-submission-form" enctype="multipart/form-data" action="{{ route('events.update', $event->id) }}">
 
+            {{ csrf_field() }}
+
             @if (count($errors) > 0)
                 <div class="alert alert-danger" role="alert">
                     <strong> Errors:</strong>

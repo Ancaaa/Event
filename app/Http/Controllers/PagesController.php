@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;   //interiorul folderului use e pentru exterior
 use App\Event;
 use App\User;
+use App\Category;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -13,8 +14,6 @@ use Carbon\Carbon;
 
 class PagesController extends Controller {
 
-    public $searchedItem = "";
-
     public function getIndex() {
         return view('pages/welcome');
         #process variable data and params
@@ -22,6 +21,15 @@ class PagesController extends Controller {
         #receive data back from the model
         #compile or process data from the model if needed
         #pass that data to the correct view
+    }
+
+    public function showCategory($id) {
+        $category = Category::find($id);
+
+        return view('events.category')->with([
+            'hero' => 'category-detail',
+            'category' => $category
+        ]);
     }
 
     public function postIndex(Request $request) {

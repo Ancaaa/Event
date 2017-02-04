@@ -15,6 +15,7 @@
     <div class="posts">
       <div class="post page type-page status-publish hentry">
         <form method="POST" class="listing-manager-submission-form" enctype="multipart/form-data" action="{{ route('events.store') }}">
+            {{ csrf_field() }}
 
             @if (count($errors) > 0)
                 <div class="alert alert-danger" role="alert">
@@ -57,7 +58,6 @@
                 <legend>Location</legend>
                 <div class="fieldset-content">
                     <div class="form-group">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="location_lat" value="" id="location_lat">
                         <input type="hidden" name="location_lng" value="" id="location_lng">
 

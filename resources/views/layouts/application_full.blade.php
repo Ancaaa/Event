@@ -29,6 +29,31 @@
                         <span class="separator">/</span> <a href="#">{{ $event->category->name }}</a>
                         <span class="separator">/</span> {{ $event->title }}
                     </nav>
+                @elseif (isset($hero) && $hero === 'category-detail')
+                    <div class="page-title page-title-hero">
+                        <div class="page-title-background" style="background-image: url('/images/categories/{{ $category->image }}')"></div>
+                        <div class="overlay"></div>
+                        <div class="page-title-inner">
+                            <strong>{{ $category->events->count() }} Events</strong>
+                            <h1>{{ $category->name }}</h1>
+
+                            {{-- <div class="page-title-meta">
+                                <div class="page-title-meta-item">
+                                    <strong>Price</strong>
+                                    <span>{{ $event->price }} {{ $event->currency }}</span>
+                                </div>
+
+                                <div class="page-title-meta-item">
+                                    <strong>Address</strong>
+                                    <span>{{ $event->location }}</span>
+                                </div>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <nav class="woocommerce-breadcrumb">
+                        <a href="{{ url('/allevents') }}">Events</a>
+                        <span class="separator">/</span> {{ $category->name }}
+                    </nav>
                 @else
                     <div class="page-title">
                         @php
