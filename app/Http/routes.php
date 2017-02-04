@@ -23,6 +23,11 @@ Route::post('events/', ['uses' => 'EventController@store', 'as' => 'events.store
 Route::post('events/{id}', ['uses' => 'EventController@show', 'as' => 'events.show']);
 Route::get('events/{id}/toggle', 'EventController@toggleAttend');
 Route::get('events/{id}/status', 'EventController@isAttending');
+Route::get('events/{id}/warn', 'NotificationsController@warnEvent')->name('events.warn');
+
+// Notification Routes
+Route::get('notifications/', 'NotificationsController@getNotifications')->name('notifications.read');
+Route::get('check-notifications/', 'NotificationsController@updateNotifications')->name('notifications.update');
 
 // Auth Routes
 Route::auth();

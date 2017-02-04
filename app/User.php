@@ -21,7 +21,7 @@ class User extends Authenticatable {
     }
 
     public function admin() {
-        return $this->hasOne('App\Models\Admin', 'user_id', 'id');
+        return $this->hasOne('App\Admin', 'user_id', 'id');
     }
 
     public function isAdmin() {
@@ -30,6 +30,14 @@ class User extends Authenticatable {
 
     public function latestAttending() {
         return $this->events()->orderBy('startdate', 'desc');
+    }
+
+    public function notifications() {
+        return $this->hasMany('App\Notification')->orderBy('created_at', 'desc')->take(10);
+    }
+
+    public function unreadNotifications() {
+        return $this->notifications()->where('seen', '<>', true);
     }
 
     protected $fillable = [

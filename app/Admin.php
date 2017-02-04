@@ -1,7 +1,7 @@
 <?php
 
 // Define Namespace
-namespace App\Models;
+namespace App;
 
 // Deps
 use Illuminate\Database\Eloquent\Model;

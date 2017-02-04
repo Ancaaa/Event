@@ -36,9 +36,9 @@
                                                 {{ method_field('DELETE') }}
                                                 <button class="button button-secondary">Delete</button>
                                             </form>
-                                            @if (Auth::user()->isAdmin())
-                                                <a class="button button-black">Warn</a>
-                                            @endif
+                                        @endif
+                                        @if (Auth::user()->isAdmin())
+                                            <a class="button button-black warnButton">Warn</a>
                                         @endif
                                     @else
                                         <a class="testButtonGrey" href="{{ url('/login') }}">Please login to join</a>
@@ -325,4 +325,15 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('extra-scripts')
+    <script>
+        $(document).ready(function() {
+            var warnButton = $('.warnButton')
+            warnButton.click(function() {
+                $.get('{{ route('events.warn', $event->id) }}', function(data, idontcare, request) {});
+            });
+        });
+    </script>
 @endsection

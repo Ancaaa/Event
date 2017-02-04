@@ -9,6 +9,11 @@
         @include('partials.header', ['experience' => 'full'])
         @yield('content')
         @include('partials.footer')
+        @yield('extra-scripts')
+
+        @if (Auth::check())
+            <script src="{{ URL::asset('js/list-notifications.js') }}"></script>
+        @endif
     </div>
 </body>
 </html>

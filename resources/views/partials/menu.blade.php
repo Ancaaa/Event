@@ -51,6 +51,14 @@
                         <li class=""><a href="{{ url('/logout')}}">Logout</a></li>
                     </ul>
                 </li>
+
+                <li id="notifications-trigger" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6">
+                    <a>
+                        Notifications
+                        <span class="unread-container"><span class="unread-number"></span></span>
+                    </a>
+                    <ul class="sub-menu notifications-menu" id="notifications-sub-menu"></ul>
+                </li>
             </ul>
         </div>
     </div>

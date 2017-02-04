@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Session;
 use Auth;
 use App\User;
+use App\Notification;
 use Image;
 use Storage;
 use File;
@@ -196,6 +197,16 @@ class EventController extends Controller {
             }
         }
 
+        foreach ($event->users as $attendant) {
+            if ($attendant->id != $event->creator_id) {
+                $notification = new Notification;
+                $notification->user_id = $attendant->id;
+                $notification->ref_id = $event->id;
+                $notification->type = 4;
+                $notification->save();
+            }
+        }
+
         // Save the event
         $event->save();
 
@@ -236,9 +247,27 @@ class EventController extends Controller {
         $attending = $event->attending($user_id);
         if (!$attending) {
             $event->users()->attach($user_id);
+
+            if ($user_id != $event->creator_id) {
+                $notification = new Notification;
+                $notification->user_id = $event->creator_id;
+                $notification->ref_id = $event->id;
+                $notification->alt_id = $user_id;
+                $notification->type = 5;
+                $notification->save();
+            }
         }
         else {
             $event->users()->detach($user_id);
+
+            if ($user_id != $event->creator_id) {
+                $notification = new Notification;
+                $notification->user_id = $event->creator_id;
+                $notification->ref_id = $event->id;
+                $notification->alt_id = $user_id;
+                $notification->type = 6;
+                $notification->save();
+            }
         }
 
         return json_encode(array("status" => "success", "attending" => !$attending));
