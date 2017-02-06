@@ -41,7 +41,6 @@
                         </div>
                     </div>
 
-
                     <div class="panel-grid" id="pg-124-2">
                         <div style="background-color: #fafafa;margin: -30px -1200px 0 -1200px;padding: 0 1200px 60px 1200px;" class="panel-row-style">
                             <div class="panel-grid-cell" id="pgc-124-2-0">
@@ -63,23 +62,21 @@
 
                                                             <span class="button">Show Events</span>
                                                         </a>
-                                                    </div><!-- /.listing-manager-location-inner -->
-                                                </div><!-- /.listing-manager-location -->
+                                                    </div>
+                                                </div>
                                             @endforeach
-                                            </div><!-- /.listing-manager-locations -->
-                                        </div><!-- /.listing-manager-locations-wrapper -->
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    @include('partials.find_events')
 
                 </div>
             </div>
-            <!-- /.main-inner -->
         </div>
-        <!-- /.main-inner -->
     </div>
-    <!-- /.main-wrapper -->
 @endsection

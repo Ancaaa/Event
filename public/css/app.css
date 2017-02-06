@@ -253,6 +253,9 @@ body {
 .gm-style-iw > div > div {
   overflow: hidden !important;
 }
+#map {
+  height: 500px;
+}
 .infoboxMap .title {
   font-size: 18px;
   font-weight: bold;
