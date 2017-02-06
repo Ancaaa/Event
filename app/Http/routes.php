@@ -38,3 +38,7 @@ Route::auth();
 // Comments
 Route::post('comments/{event_id}', ['uses' => 'CommentsController@store', 'as' => 'comments.store']);
 Route::get('comments/{event_id}/delete', ['uses' => 'CommentsController@destroy', 'as' => 'comments.delete']);
+
+// API Routes (redefine the other ones)
+Route::get('api/event/{id}', 'EventController@apiGetEvent');
+Route::get('api/events/by-area/{area}', 'EventController@apiGetEventInArea');

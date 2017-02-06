@@ -15,6 +15,7 @@ use Image;
 use Storage;
 use File;
 use Illuminate\Support\Facades\View;
+use DB;
 
 class EventController extends Controller {
 
@@ -232,6 +233,48 @@ class EventController extends Controller {
     }
 
     /** API Functions **/
+
+    public function apiGetEvent($id) {
+        $event = Event::find($id);
+
+        if (!$event) {
+            return json_encode(array("status" => "error", 'message' => 'The event could not be found.'));
+        }
+
+        return json_encode(array(
+            "status" => "success",
+            "event" => $event->toAPIJson()
+        ));
+    }
+
+    public function apiGetEventInArea($area) {
+        $directions = array(
+            'lat_inf' => explode(',', $area)[0],
+            'lat_sup' => explode(',', $area)[1],
+            'lng_inf' => explode(',', $area)[2],
+            'lng_sup' => explode(',', $area)[3]
+        );
+
+        $events = DB::table('events')
+            ->whereBetween('location_lat', [$directions['lat_inf'], $directions['lat_sup']])
+            ->whereBetween('location_lng', [$directions['lng_inf'], $directions['lng_sup']])
+            ->where([
+                ['enddate', ">", date('Y-m-d')]
+            ])->orWhere(function ($query) {
+                $query->where([
+                    ['enddate', "=", date('Y-m-d')],
+                    ['endtime', ">", date('H:i:s')]
+                ]);
+            })
+            ->orderBy('startdate')
+            ->get();
+
+        $events = array_map(function($event) {
+            return Event::find($event->id)->toAPIJson();
+        }, $events);
+
+        return json_encode(array("status" => "success", "events" => $events));
+    }
 
     // User is attending event
     public function isAttending($id) {

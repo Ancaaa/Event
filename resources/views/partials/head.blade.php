@@ -27,5 +27,8 @@
 
 <!-- App Specific -->
 <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}" />
-
-<!-- Eve -->
+<script>
+    var EventUApp = {
+        googleMarker: '{{ URL::asset('img/marker.png') }}'
+    }
+</script>

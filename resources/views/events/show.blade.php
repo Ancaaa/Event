@@ -4,9 +4,12 @@
     <script src="{{ URL::asset('js/show-event.js') }}"></script>
     <style>
         #map {
-            height: 300px;
+            height: 500px;
         }
     </style>
+    <script>
+        EventUApp.eventId = {{ $event->id }}
+    </script>
 @endsection
 
 @section('content_full')

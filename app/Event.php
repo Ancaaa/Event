@@ -71,4 +71,17 @@ class Event extends Model {
             ]);
         });
     }
+
+    public function toAPIJson() {
+        return array(
+            "id" => $this->id,
+            "title" => $this->title,
+            "description" => $this->description,
+            "when" => $this->durationNow(),
+            "attendants" => $this->attendantsNum(),
+            "location_lat" => $this->location_lat,
+            "location_lng" => $this->location_lng,
+            "href" => url('events/' . $this->id)
+        );
+    }
 }
