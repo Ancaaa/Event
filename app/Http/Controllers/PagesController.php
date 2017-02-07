@@ -14,6 +14,11 @@ use Carbon\Carbon;
 
 class PagesController extends Controller {
 
+    public function __construct() {
+        parent::__construct();
+        $this->middleware('blocked');
+    }
+
     public function getIndex() {
         return view('pages/welcome');
         #process variable data and params

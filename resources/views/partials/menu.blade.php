@@ -33,7 +33,8 @@
                         @endforeach
                     </ul>
                 </li>
-                <li class=""><a href="{{ url('/allevents')}}">Find Events</a></li>
+                <li class=""><a href="{{ url('/allevents')}}">Events</a></li>
+                <li class=""><a href="{{ route('events.search')}}">Search Events</a></li>
             </ul>
 
             <ul id="welcome-menu" class="menu">

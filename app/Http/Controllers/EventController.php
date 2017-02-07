@@ -16,12 +16,13 @@ use Storage;
 use File;
 use Illuminate\Support\Facades\View;
 use DB;
+use App\Utils;
 
 class EventController extends Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware(['auth', 'blocked'], ['except' => 'show']);
     }
 
     /** Views Function **/
@@ -58,6 +59,66 @@ class EventController extends Controller {
             'event' => Event::find($id),
             'categories' => Category::all(),
             'pageTitle' => 'Edit Event'
+        ]);
+    }
+
+    public function search(Request $request) {
+        $query = $request->query();
+        $events = Event::all();
+
+        if (array_key_exists('filter-keyword', $query) && $query['filter-keyword'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $keyword = strtolower($query['filter-keyword']);
+                $inDesc = strpos(strtolower($event->description), $keyword);
+                $inTitle = strpos(strtolower($event->title), $keyword);
+
+                if ($inDesc === false && $inTitle === false) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        if (array_key_exists('filter-price-from', $query) && $query['filter-price-from'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $price = intval($query['filter-price-from']);
+
+                if ($event->price >= $price) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-price-to', $query) && $query['filter-price-to'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $price = intval($query['filter-price-to']);
+
+                if ($event->price <= $price) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-listing-categories', $query) && $query['filter-listing-categories'] != "0") {
+            $events = $events->filter(function($event) use ($query) {
+                $category = intval($query['filter-listing-categories']);
+
+                if ($event->category_id <= $category) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        return view('events.search')->with([
+            'events' => $events,
+            'pageTitle' => 'Search Events'
         ]);
     }
 
@@ -233,6 +294,97 @@ class EventController extends Controller {
     }
 
     /** API Functions **/
+
+    public function apiSearchEvents(Request $request) {
+        $query = $request->query();
+        // $events = Event::all();
+        $events = Event::activeEvents()->get();
+
+        if (array_key_exists('filter-keyword', $query) && $query['filter-keyword'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $keyword = strtolower($query['filter-keyword']);
+                $inDesc = strpos(strtolower($event->description), $keyword);
+                $inTitle = strpos(strtolower($event->title), $keyword);
+
+                if ($inDesc === false && $inTitle === false) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        if (array_key_exists('filter-price-from', $query) && $query['filter-price-from'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $price = intval($query['filter-price-from']);
+
+                if ($event->price >= $price) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-price-to', $query) && $query['filter-price-to'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $price = intval($query['filter-price-to']);
+
+                if ($event->price <= $price) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-listing-categories', $query) && $query['filter-listing-categories'] != "0") {
+            $events = $events->filter(function($event) use ($query) {
+                $category = intval($query['filter-listing-categories']);
+
+                if ($event->category_id === $category) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-event-date-from', $query) && $query['filter-event-date-from'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $dateFrom = $query['filter-event-date-from'];
+                $start_string = $event->enddate . " " . $event->endtime;
+
+                if (Utils::dbBefore($dateFrom . ' 00:00:00', $start_string)) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        if (array_key_exists('filter-event-date-to', $query) && $query['filter-event-date-to'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $dateTo = $query['filter-event-date-to'];
+                $start_string = $event->startdate . " " . $event->starttime;
+
+                if (Utils::dbBefore($start_string, $dateTo . ' 00:00:00')) {
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        $events = $events->map(function($event) {
+            return $event->toAPIJson();
+        });
+
+        return json_encode(array(
+            "status" => "success",
+            "events" => $events
+        ));
+    }
 
     public function apiGetEvent($id) {
         $event = Event::find($id);

@@ -78,10 +78,18 @@ class Event extends Model {
             "title" => $this->title,
             "description" => $this->description,
             "when" => $this->durationNow(),
+            "duration" => $this->duration(),
             "attendants" => $this->attendantsNum(),
             "location_lat" => $this->location_lat,
             "location_lng" => $this->location_lng,
-            "href" => url('events/' . $this->id)
+            "href" => url('events/' . $this->id),
+            "price" => $this->price,
+            "currency" => $this->currency,
+            "startdate" => $this->startdate,
+            "starttime" => $this->starttime,
+            "image" => url('/images/events/' . $this->image),
+            "location" => $this->location,
+            "created_at" => $this->created_at
         );
     }
 }

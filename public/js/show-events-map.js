@@ -9,7 +9,8 @@ function showEventsMap() {
             lng: 26.1010734
         },
         zoom: 15,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'roadmap',
+        scrollwheel: false,
     });
 
     // Disable some controls
@@ -101,10 +102,6 @@ function showEventsMap() {
     // Set Events
     map.addListener('bounds_changed', function() {
         var area = map.getBounds().toJSON();
-
-        console.log('Lat between', area.south, area.north)
-        console.log('Lng between', area.west, area.east)
-
         requestEvents(area)
     })
 }

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Profile;
+use App\Blocked;
 use Storage;
 use App\User;
+use Auth;
 use Session;
 use Image;
 use File;
@@ -15,7 +17,7 @@ class ProfileController extends Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->middleware('auth');
+        $this->middleware(['auth', 'blocked']);
     }
 
     public function edit($user_id) {
@@ -38,6 +40,29 @@ class ProfileController extends Controller {
             'profile' => $profile,
             'pageTitle' => $user->name
         ]);
+    }
+
+    public function block(Request $request, $user_id) {
+        $user = User::find($user_id);
+
+        if ($user && Auth::user()->isAdmin()) {
+            $block = new Blocked;
+            $block->user_id = $user_id;
+            $block->save();
+        }
+
+        return redirect()->route('profiles.show', $user_id);
+    }
+
+    public function unblock(Request $request, $user_id) {
+        $user = User::find($user_id);
+
+        if ($user && Auth::user()->isAdmin()) {
+            $block = $user->blocked;
+            $block->delete();
+        }
+
+        return redirect()->route('profiles.show', $user_id);
     }
 
     public function update(Request $request, $user_id) {

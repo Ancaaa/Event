@@ -26,14 +26,29 @@
 
                     <div class="user-actions">
                         @if(Auth::id() === $user->id)
-                            <a href="{{ url('/profiles/' . $user->id . '/edit') }}" class="button button-secondary">Edit Profile</a>
+                            <a href="{{ url('/profiles/' . $user->id . '/edit') }}" class="button button-secondary">Edit</a>
+                        @endif
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            @if($user->isBlocked())
+                                <a href="{{ route('profile.unblock', $user->id) }}" class="button button-secondary">Unblock</a>
+                            @else
+                                <a href="{{ route('profile.block', $user->id) }}" class="button button-secondary">Block</a>
+                            @endif
+
                         @endif
                     </div>
                 </div>
                 <div class="content">
                     <div class="information">
-                        <span class="firstname">{{ $profile->firstname }}</span>
-                        <span class="lastname">{{ $profile->lastname }}</span>
+                        @if($user->isBlocked())
+                            <s>
+                                <span class="firstname">{{ $profile->firstname }}</span>
+                                <span class="lastname">{{ $profile->lastname }}</span>
+                            </s>
+                        @else
+                            <span class="firstname">{{ $profile->firstname }}</span>
+                            <span class="lastname">{{ $profile->lastname }}</span>
+                        @endif
                     </div>
                     <div class="bio">"{{ $profile->bio }}"</div>
                     <div class="post-overview">

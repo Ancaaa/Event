@@ -24,8 +24,16 @@ class User extends Authenticatable {
         return $this->hasOne('App\Admin', 'user_id', 'id');
     }
 
+    public function blocked() {
+        return $this->hasOne('App\Blocked', 'user_id', 'id');
+    }
+
     public function isAdmin() {
         return $this->admin()->count() > 0;
+    }
+
+    public function isBlocked() {
+        return $this->blocked()->count() > 0;
     }
 
     public function latestAttending() {

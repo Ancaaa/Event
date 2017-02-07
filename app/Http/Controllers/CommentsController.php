@@ -14,7 +14,7 @@ class CommentsController extends Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->middleware('auth');
+        $this->middleware(['auth', 'blocked']);
     }
 
     public function store(Request $request, $event_id) {

@@ -6,15 +6,11 @@ Route::post('/', 'PagesController@postIndex');
 Route::get('/home', 'PagesController@getIndex');
 Route::get('allevents', 'PagesController@getAllEvents')->name('allevents');
 
-// Old Profile Routes
-//Route::resource('profile', 'ProfilesController', ['only' => ['show', 'edit', 'update']]);
-//Route::get('/{username}', ['as' => 'profile', 'uses' => 'ProfileController@show']);
-//Route::get('/profile', 'PagesController@getProfile');
-//Route::get('ViewEvent/{id}', ['as' => 'site.single', 'uses' =>'PagesController@getSingle']);
-
 // Profile Routes
 Route::resource('profiles', 'ProfileController');
 Route::get('profile/{id}/edit', 'ProfileController@edit')->name('profile.edit');
+Route::get('profile/{id}/block', 'ProfileController@block')->name('profile.block');
+Route::get('profile/{id}/unblock', 'ProfileController@unblock')->name('profile.unblock');
 Route::get('profile/{id}', 'ProfileController@show')->name('profile.show');
 
 // Events Routes
@@ -24,6 +20,7 @@ Route::post('events/{id}', ['uses' => 'EventController@show', 'as' => 'events.sh
 Route::get('events/{id}/toggle', 'EventController@toggleAttend');
 Route::get('events/{id}/status', 'EventController@isAttending');
 Route::get('events/{id}/warn', 'NotificationsController@warnEvent')->name('events.warn');
+Route::get('events-search', 'EventController@search')->name('events.search');
 
 // Categories
 Route::get('categories/{id}', 'PagesController@showCategory')->name('category.show');
@@ -40,5 +37,6 @@ Route::post('comments/{event_id}', ['uses' => 'CommentsController@store', 'as' =
 Route::get('comments/{event_id}/delete', ['uses' => 'CommentsController@destroy', 'as' => 'comments.delete']);
 
 // API Routes (redefine the other ones)
-Route::get('api/event/{id}', 'EventController@apiGetEvent');
 Route::get('api/events/by-area/{area}', 'EventController@apiGetEventInArea');
+Route::get('api/events/search', 'EventController@apiSearchEvents');
+Route::get('api/event/{id}', 'EventController@apiGetEvent');

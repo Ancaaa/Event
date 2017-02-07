@@ -14,7 +14,7 @@ class NotificationsController extends Controller {
 
     public function __construct(Request $request) {
         parent::__construct();
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'blocked']);
     }
 
     public function getNotifications() {

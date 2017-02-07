@@ -5,6 +5,7 @@
 <meta name="keywords" content="" />
 
 <!-- Global JS Libraries -->
+<script src="{{ URL::asset('js/moment.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.js') }}"></script>
 <script src="{{ URL::asset('js/jquery-migrate.min.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.scrollTo.min.js') }}"></script>
@@ -15,6 +16,7 @@
 <script src="{{ URL::asset('js/eve.js') }}"></script>
 
 <!-- CSS Standards -->
+<link rel="stylesheet" href="{{ URL::asset('css/woocommerce-layout.css') }}" />
 <link rel="stylesheet" id="eve-fonts-css" href="//fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C600%2C700%26subset%3Dlatin%2Clatin-ext&amp;ver=1.0.0" type="text/css" media="all" />
 <link rel="stylesheet" id="jquery-ui-smoothness-css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" media="all">
 <link rel="stylesheet" href="{{ URL::asset('css/linear-icons.css') }}" />

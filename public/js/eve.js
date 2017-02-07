@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
         $('#marker-' + id).addClass('hover');
     });
 
-    $('.map-search-item').on('mouseleave', function() {        
+    $('.map-search-item').on('mouseleave', function() {
         var id = $(this).data('marker-id');
         $('#marker-' + id).removeClass('hover');
     });
@@ -17,31 +17,31 @@ jQuery(document).ready(function($) {
     /**
      * ezMark
      */
-    $('input[type=radio], input[type=checkbox]').ezMark();
-    
+    // $('input[type=radio], input[type=checkbox]').ezMark();
+
     /**
      * Cover carousel
      */
-     $('.product-gallery').owlCarousel({
-        autoplay: false,
-        autoHeight: true,
-        loop: true,
-        items: 3,  
-        margin: 2,     
-        nav: false,
-        navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-        responsive: {
-        0: {
-            items: 1
-        },
-        544: {
-            items: 2
-        },
-        768: {
-            items: 3
-        }
-    }        
-     });
+    //  $('.product-gallery').owlCarousel({
+    //     autoplay: false,
+    //     autoHeight: true,
+    //     loop: true,
+    //     items: 3,
+    //     margin: 2,
+    //     nav: false,
+    //     navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+    //     responsive: {
+    //     0: {
+    //         items: 1
+    //     },
+    //     544: {
+    //         items: 2
+    //     },
+    //     768: {
+    //         items: 3
+    //     }
+    // }
+    //  });
 
     /**
      * Animations
@@ -50,15 +50,15 @@ jQuery(document).ready(function($) {
 
     /**
      * Blog masonry
-     */    
-    var container = $('.blog .posts');
-    container.imagesLoaded(function() {
-        container.masonry({
-            itemSelector: '.type-post',
-            percentPosition: true,
-            gutter: 30
-        });
-    });
+     */
+    // var container = $('.blog .posts');
+    // container.imagesLoaded(function() {
+    //     container.masonry({
+    //         itemSelector: '.type-post',
+    //         percentPosition: true,
+    //         gutter: 30
+    //     });
+    // });
 
     /**
      * Hero animate
