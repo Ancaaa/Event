@@ -6,6 +6,7 @@
 
 <!-- Global JS Libraries -->
 <script src="{{ URL::asset('js/moment.js') }}"></script>
+<script src="{{ URL::asset('js/lodash.min.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.js') }}"></script>
 <script src="{{ URL::asset('js/jquery-migrate.min.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.scrollTo.min.js') }}"></script>

@@ -314,6 +314,19 @@ class EventController extends Controller {
             });
         }
 
+        if (array_key_exists('filter-location', $query) && $query['filter-location'] != "") {
+            $events = $events->filter(function($event) use ($query) {
+                $location = strtolower($query['filter-location']);
+                $inLocation = strpos(strtolower($event->location), $location);
+
+                if ($inLocation === false) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
         if (array_key_exists('filter-price-from', $query) && $query['filter-price-from'] != "") {
             $events = $events->filter(function($event) use ($query) {
                 $price = intval($query['filter-price-from']);

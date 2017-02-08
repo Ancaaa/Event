@@ -5,6 +5,7 @@ $(document).ready(function(){
         'filter-keyword',
         'filter-price-from',
         'filter-price-to',
+        'filter-location',
         'filter-listing-categories',
         'filter-event-date-from',
         'filter-event-date-to'
@@ -109,10 +110,10 @@ $(document).ready(function(){
     // Register Events
     $('#sortBy').on('change', function() { sortBy = $('#sortBy').val(); updateUI(); })
     ids.forEach(function(id) {
-        $("#" + id).on('change', updateData)
-        $("#" + id).keypress(updateData)
+        $("#" + id).on('change', _.debounce(updateData, 100))
+        $("#" + id).keypress(_.debounce(updateData, 100))
     })
-    $('#search-button').click(updateData)
+    $('#search-button').click(_.debounce(updateData, 100))
 
     updateData()
 })

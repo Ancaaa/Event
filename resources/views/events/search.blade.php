@@ -38,6 +38,10 @@
                             <input id="filter-keyword" type="text" name="filter-keyword" placeholder="Keyword" class="form-control">
                         </div>
 
+                        <div class="form-group form-group-location form-group-location">
+                            <input id="filter-location" type="text" name="filter-location" placeholder="Location" class="form-control">
+                        </div>
+
                         <div class="form-group form-group-price form-group-price-from">
                             <input id="filter-price-from" type="text" name="filter-price-from" placeholder="Price from" class="form-control">
                         </div>
