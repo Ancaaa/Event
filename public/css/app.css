@@ -306,6 +306,14 @@ body {
     width: 23%;
   }
 }
+.woocommerce ul.products li.product.summ .event-image {
+  display: block;
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .footer-wrapper {
   background: transparent;
 }

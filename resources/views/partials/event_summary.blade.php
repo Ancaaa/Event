@@ -2,9 +2,9 @@
     <a href="{{ url('/events', $event->id) }}" class="woocommerce-LoopProduct-link">
         <div class="product-image-wrapper">
             @if($event->image)
-            <img width="400" height="340" src="{{ '/images/events/' . $event->image }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
+                <div class="event-image" style="background-image: url(/images/events/{{ $event->image }})"></div>
             @else
-            <img width="400" height="340" src="{{ '/images/thumbs/01.jpg' }}" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">
+                <div class="event-image" style="background-image: url(/images/thumbs/01.jpg)"></div>
             @endif
         </div>
 

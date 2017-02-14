@@ -8,7 +8,7 @@ var create_event_summary = function(event) {
         <li class="product summ">\
             <a href="' + event.href + '" class="woocommerce-LoopProduct-link">\
             <div class="product-image-wrapper">\
-                <img width="400" height="340" src="'+ event.image +'" class="attachment-shop_catalog size-shop_catalog wp-post-image" alt="">\
+                <div class="event-image" style="background-image: url('+ event.image +')"></div>\
             </div>\
             \
             <div class="product-date">\
