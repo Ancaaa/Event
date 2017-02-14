@@ -7,7 +7,7 @@
         <div id="content" role="main">
             <!-- Start Profile Page -->
             <div class="profile-summary">
-                <div class="header">
+                <div class="headerx">
                     <div class="profile-avatar" style="background-image: url('/images/avatars/{{ $profile->profilepic }}'); margin: auto; margin-bottom: 50px;"></div>
 
                     <div class="post-social profile">

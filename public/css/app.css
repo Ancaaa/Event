@@ -77,11 +77,11 @@ body {
   background-position: center center;
   border-radius: 100%;
 }
-.profile-summary .header {
+.profile-summary .headerx {
   width: 300px;
   vertical-align: top;
 }
-.profile-summary .header .user-actions {
+.profile-summary .headerx .user-actions {
   text-align: center;
   margin: 15px 0;
 }
