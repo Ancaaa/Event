@@ -70,9 +70,9 @@
                             <input type="date" id="filter-event-date-to" name="filter-event-date-to" placeholder="Event date to" class="form-control listing-manager-date-input">
                         </div>
 
-                        {{-- <div class="form-group form-group-button">
+                         <div class="form-group form-group-button">
                             <button id="search-button" class="button" type="submit">Search Events</button>
-                        </div> --}}
+                        </div> 
                     </div>
                 </form>
             </div>

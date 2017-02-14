@@ -10,7 +10,7 @@
                             <div class="so-panel widget widget_text panel-first-child panel-last-child">
                                 <div class="page-header">
                                     <h2>Latest Events</h2>
-                                    <p>Find the best events suited for you needs?!?!.</p>
+                                    <p>Find the best events suited for you needs.</p>
                                 </div>
 
                                 <div class="woocommerce columns-5">

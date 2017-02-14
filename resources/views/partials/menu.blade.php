@@ -47,7 +47,7 @@
                     </ul>
                 </li>
                 @if (Auth::user()->isAdmin())
-                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6"><a>Admin</a>
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6"><a>AdminPage</a>
                         <ul class="sub-menu">
                             <li class=""><a href="{{ route('admin.list_categories') }}">Categories</a></li>
                             <li class=""><a href="{{ route('admin.list_users')}}">Users</a></li>

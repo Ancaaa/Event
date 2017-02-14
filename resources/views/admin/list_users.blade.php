@@ -19,7 +19,7 @@
                     <td>Location</td>
                     <td>Birthdate</td>
                     <td>Gender</td>
-                    <td>Image`</td>
+                    <td>Image</td>
                     <td width="150">Actions</td>
                 </thead>
                 <tbody>

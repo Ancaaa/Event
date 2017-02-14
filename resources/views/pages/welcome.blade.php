@@ -19,7 +19,7 @@
 
                                                     <div class="hero-search-content">
                                                         <h1>Search for the best events in your city</h1>
-                                                        <p>Insert awesome text here to impress customers...</p>
+                                                        <p>Join thousands of meetups, talks, parties and mixers already here!</p>
                                                     </div>
                                                 </div>
                                                 <!-- /.hero-creative -->
@@ -48,7 +48,7 @@
                                     <div class="textwidget">
                                         <div class="page-header">
                                             <h2>Event Categories</h2>
-                                            <p>Finding an event is easier. Choose from our various categories ...mda</p>
+                                            <p>Finding an event is easier. Choose from our various categories. </p>
                                         </div>
 
                                         <div class="listing-manager-locations-wrapper">
@@ -72,9 +72,9 @@
                             </div>
                         </div>
                     </div>
-
+                        @if(!Auth::guest())
                     @include('partials.find_events')
-
+                        @endif
                 </div>
             </div>
         </div>

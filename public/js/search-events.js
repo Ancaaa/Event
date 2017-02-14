@@ -111,7 +111,7 @@ $(document).ready(function(){
     $('#sortBy').on('change', function() { sortBy = $('#sortBy').val(); updateUI(); })
     ids.forEach(function(id) {
         $("#" + id).on('change', _.debounce(updateData, 100))
-        $("#" + id).keypress(_.debounce(updateData, 100))
+     //   $("#" + id).keypress(_.debounce(updateData, 100))
     })
     $('#search-button').click(_.debounce(updateData, 100))
 
