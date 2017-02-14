@@ -1,7 +1,7 @@
     <div class="site-navigation">
         <div class="menu-primary-container">
             <ul id="menu-primary-1" class="menu">
-                <li class="menu-item"><a href="{{ route('admin.index') }}">Home</a></li>
+                {{-- <li class="menu-item"><a href="{{ route('admin.index') }}">Home</a></li> --}}
                 <li class="menu-item"><a href="{{ route('admin.list_categories') }}">Categories</a></li>
                 {{-- <li class="menu-item"><a>Events</a></li> --}}
                 {{-- <li class="menu-item"><a>Comments</a></li> --}}
