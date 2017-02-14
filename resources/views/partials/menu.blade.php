@@ -3,7 +3,7 @@
         <div class="menu-primary-container">
             <ul id="menu-primary-1" class="menu">
                 <li class=""><a href="{{ url('/') }}">Home</a></li>
-                <li class=""><a href="{{ url('/allevents')}}">Find Events</a></li>
+                <li class=""><a href="{{ url('/allevents')}}">Latest Events</a></li>
             </ul>
 
             <ul id="welcome-menu" class="menu">
@@ -26,15 +26,16 @@
         <div class="menu-primary-container">
             <ul id="menu-primary-1" class="menu">
                 <li class=""><a href="{{ url('/') }}">Home</a></li>
-                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6"><a>Categories</a>
+                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6"><a href="{{ route('category.index')}}">Categories</a>
                     <ul class="sub-menu">
                         @foreach($categories as $category)
                             <li class=""><a href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </li>
-                <li class=""><a href="{{ url('/allevents')}}">Events</a></li>
+                <li class=""><a href="{{ url('/allevents')}}">Latest Events</a></li>
                 <li class=""><a href="{{ route('events.search')}}">Search Events</a></li>
+                <li class=""><a href="{{ route('events.discover')}}">Discover Events</a></li>
             </ul>
 
             <ul id="welcome-menu" class="menu">
@@ -45,6 +46,9 @@
                         <li class=""><a href="{{ url('/logout')}}">Logout</a></li>
                     </ul>
                 </li>
+                @if (Auth::user()->isAdmin())
+                    <li class=""><a href="{{ route('admin.index')}}">Admin</a></li>
+                @endif
             </ul>
         </div>
     </div>
@@ -67,6 +71,9 @@
                     </a>
                     <ul class="sub-menu notifications-menu" id="notifications-sub-menu"></ul>
                 </li>
+                @if (Auth::user()->isAdmin())
+                    <li class=""><a href="{{ route('admin.index')}}">Admin</a></li>
+                @endif
             </ul>
         </div>
     </div>

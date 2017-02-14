@@ -119,9 +119,9 @@
                         <li class="description_tab active">
                             <a href="#tab-description">Description</a>
                         </li>
-                        <li class="social_tab">
+                        {{-- <li class="social_tab">
                             <a href="#tab-social">Social</a>
-                        </li>
+                        </li> --}}
                         <li class="location_tab" onclick="tryAgain()">
                             <a href="#tab-location">Location</a>
                         </li>
@@ -208,7 +208,8 @@
                             {{-- TODO: Design --}}
                             @foreach ($event->users as $attendant)
                                 <div class="attendant">
-                                    {{ $attendant->name }}
+                                    <div class="picture" style="background-image:url(/images/avatars/{{ $attendant->profile->profilepic }})"></div>
+                                    <a href="{{ route('profile.show', $attendant->id) }}">{{ $attendant->name }}</a>
                                 </div>
                             @endforeach
                         </div>

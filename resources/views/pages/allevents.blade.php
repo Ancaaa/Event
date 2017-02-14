@@ -9,7 +9,7 @@
                         <div class="panel-grid-cell">
                             <div class="so-panel widget widget_text panel-first-child panel-last-child">
                                 <div class="page-header">
-                                    <h2>Popular Events</h2>
+                                    <h2>Latest Events</h2>
                                     <p>Find the best events suited for you needs?!?!.</p>
                                 </div>
 
@@ -24,9 +24,6 @@
                         </div>
                     </div>
                 </div>
-
-                @include('partials.find_events')
-
             </div>
         </div>
     </div>

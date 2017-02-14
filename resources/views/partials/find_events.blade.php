@@ -1,3 +1,4 @@
+<script>var mapScroll = {{ isset($mapScroll) && $mapScroll ? 'true' : 'false' }}</script>
 <script src="{{ URL::asset('js/show-events-map.js') }}"></script>
 
 <div class="panel-grid">
@@ -5,7 +6,7 @@
         <div class="panel-grid-cell">
             <div class="so-panel widget widget_text panel-first-child panel-last-child">
                 <div class="page-header">
-                    <h2>Find Events</h2>
+                    <h2>Discover Events</h2>
                     <p>Browse the map to find events in your area.</p>
                 </div>
 

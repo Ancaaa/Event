@@ -10,7 +10,7 @@ function showEventsMap() {
         },
         zoom: 15,
         mapTypeId: 'roadmap',
-        scrollwheel: false,
+        scrollwheel: mapScroll ? mapScroll : false,
     });
 
     // Disable some controls

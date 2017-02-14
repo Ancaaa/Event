@@ -28,6 +28,12 @@ class PagesController extends Controller {
         #pass that data to the correct view
     }
 
+    public function showCategories() {
+        return view('events.categories')->with([
+            'pageTitle' => 'Categories'
+        ]);
+    }
+
     public function showCategory($id) {
         $category = Category::find($id);
 
@@ -37,27 +43,8 @@ class PagesController extends Controller {
         ]);
     }
 
-    public function postIndex(Request $request) {
-        $this->validate($request, [
-            'email' =>'required|email',
-            'message' => 'min:10',
-            'subject' => 'min:3'
-        ]);
-
-        $data = array(
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'bodyMessage' => $request->message
-        );
-
-        Mail::send('emails.contact', $data, function($message) use ($data) {
-            $message->from($data['email']);
-            $message->to('events@eventU.com');
-            $message->subject($data['subject']);
-        });
-
-        Session::flash('success', 'Your email was sent!');
-        return redirect(' ');
+    public function discoverEvents() {
+        return view('events.discover');
     }
 
     public function getAllEvents() {
