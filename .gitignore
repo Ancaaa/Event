@@ -1,8 +1,8 @@
-/vendor
-/node_modules
-/public/storage
-/.idea
-/.phpintel
+vendor/
+node_modules/
+public/storage/
+.idea/
+.phpintel/
 Homestead.yaml
 Homestead.json
 .env
